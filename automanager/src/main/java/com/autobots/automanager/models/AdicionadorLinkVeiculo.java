@@ -2,7 +2,6 @@ package com.autobots.automanager.models;
 
 import com.autobots.automanager.controles.VeiculoControle;
 import com.autobots.automanager.entidades.Veiculo;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<Veiculo> {
             long id = veiculo.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(VeiculoController.class)
+                            .methodOn(VeiculoControle.class)
                             .visualizarVeiculo(id))
                     .withSelfRel();
             veiculo.add(linkProprio);
@@ -29,7 +28,7 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<Veiculo> {
     public void adicionarLink(Veiculo objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(VeiculoController.class)
+                        .methodOn(VeiculoControle.class)
                         .listarVeiculos())
                 .withRel("veiculos");
         objeto.add(linkProprio);

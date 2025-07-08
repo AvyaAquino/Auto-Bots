@@ -1,6 +1,6 @@
 package com.autobots.automanager.DTO;
 
-import com.autobots.automanager.entidades.*;
+import com.autobots.automanager.entitades.*;
 import com.autobots.automanager.enumeracoes.PerfilUsuario;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ public record UsuarioDto(
         Endereco endereco,
         Set<Documento> documentos,
         Set<Email> emails,
-        Set<CredencialUsuarioSenha> credenciais,
+        Credencial credencial,
         Set<Mercadoria> mercadorias,
         Set<Venda> vendas,
         Set<Veiculo> veiculos

@@ -19,7 +19,7 @@ public class AdicionadorLinkCredencial implements AdicionadorLink<Credencial> {
             long id = credencial.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(CredencialController.class)
+                            .methodOn(CredencialControle.class)
                             .visualizarCredencial(id))
                     .withSelfRel();
             credencial.add(linkProprio);
@@ -30,7 +30,7 @@ public class AdicionadorLinkCredencial implements AdicionadorLink<Credencial> {
     public void adicionarLink(Credencial objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(CredencialController.class)
+                        .methodOn(CredencialControle.class)
                         .listarCredenciais())
                 .withRel("credenciais");
         objeto.add(linkProprio);

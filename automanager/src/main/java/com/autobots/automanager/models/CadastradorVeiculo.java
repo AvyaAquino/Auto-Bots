@@ -5,7 +5,7 @@ import com.autobots.automanager.entidades.Veiculo;
 import com.autobots.automanager.entidades.Venda;
 import com.autobots.automanager.repositorys.UsuarioRepository;
 import com.autobots.automanager.repositorys.VeiculoRepository;
-import com.autobots.automanager.repositorys.VendaRespository;
+import com.autobots.automanager.repositorys.VendaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class CadastradorVeiculo {
     private UsuarioRepository repositorioUsuario;
 
     @Autowired
-    private VendaRespository repositorioVenda;
+    private VendaRepository repositorioVenda;
 
     @Autowired
     private CadastradorVenda cadastradorVenda;

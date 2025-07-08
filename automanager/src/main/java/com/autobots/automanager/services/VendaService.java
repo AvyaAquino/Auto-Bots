@@ -9,7 +9,7 @@ import com.autobots.automanager.models.CadastradorVenda;
 import com.autobots.automanager.repositorys.EmpresaRepository;
 import com.autobots.automanager.repositorys.UsuarioRepository;
 import com.autobots.automanager.repositorys.VeiculoRepository;
-import com.autobots.automanager.repositorys.VendaRespository;
+import com.autobots.automanager.repositorys.VendaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.Set;
 public class VendaService {
 
     @Autowired
-    private VendaRespository repositorioVenda;
+    private VendaRepository repositorioVenda;
 
     @Autowired
     private EmpresaRepository repositorioEmpresa;

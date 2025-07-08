@@ -2,7 +2,6 @@ package com.autobots.automanager.models;
 
 import com.autobots.automanager.controles.MercadoriaControle;
 import com.autobots.automanager.entidades.Mercadoria;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
             long id = mercadoria.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(MercadoriaController.class)
+                            .methodOn(MercadoriaControle.class)
                             .visualizarMercadoria(id))
                     .withSelfRel();
             mercadoria.add(linkProprio);
@@ -29,7 +28,7 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
     public void adicionarLink(Mercadoria objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(MercadoriaController.class)
+                        .methodOn(MercadoriaControle.class)
                         .listarMercadorias())
                 .withRel("mercadorias");
         objeto.add(linkProprio);

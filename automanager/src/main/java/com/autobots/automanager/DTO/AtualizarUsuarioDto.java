@@ -1,6 +1,6 @@
 package com.autobots.automanager.DTO;
 
-import com.autobots.automanager.entidades.*;
+import com.autobots.automanager.entitades.*;
 import com.autobots.automanager.enumeracoes.PerfilUsuario;
 
 import java.util.Optional;
@@ -14,7 +14,7 @@ public record AtualizarUsuarioDto(
         Optional<Endereco> endereco,
         Optional<Set<Documento>> documentos,
         Optional<Set<Email>> emails,
-        Optional<Set<CredencialUsuarioSenha>> credenciais,
+        Optional<Credencial> credencial,
         Optional<Set<Mercadoria>> mercadorias,
         Optional<Set<Venda>> vendas,
         Optional<Set<Veiculo>> veiculos

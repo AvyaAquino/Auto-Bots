@@ -7,7 +7,7 @@ import com.autobots.automanager.models.AdicionadorLinkVeiculo;
 import com.autobots.automanager.models.CadastradorVeiculo;
 import com.autobots.automanager.repositorys.UsuarioRepository;
 import com.autobots.automanager.repositorys.VeiculoRepository;
-import com.autobots.automanager.repositorys.VendaRespository;
+import com.autobots.automanager.repositorys.VendaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class VeiculoService {
     private CadastradorVeiculo cadastradorVeiculo;
 
     @Autowired
-    private VendaRespository repositorioVenda;
+    private VendaRepository repositorioVenda;
 
     @Autowired
     private AdicionadorLinkVeiculo adicionadorLinkVeiculo;

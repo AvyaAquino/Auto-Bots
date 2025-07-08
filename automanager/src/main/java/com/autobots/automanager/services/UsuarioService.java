@@ -1,22 +1,26 @@
 package com.autobots.automanager.services;
 
+
 import com.autobots.automanager.DTO.AtualizarUsuarioDto;
 import com.autobots.automanager.DTO.UsuarioDto;
 import com.autobots.automanager.entidades.*;
+import com.autobots.automanager.enumeracoes.PerfilUsuario;
 import com.autobots.automanager.models.AdicionadorLinkUsuario;
 import com.autobots.automanager.models.AtualizadorDocumento;
 import com.autobots.automanager.models.AtualizadorEmail;
 import com.autobots.automanager.models.AtualizadorTelefone;
 import com.autobots.automanager.models.CadastradorUsuario;
-import com.autobots.automanager.repositorys.EmpresaRepository;
-import com.autobots.automanager.repositorys.UsuarioRepository;
-import com.autobots.automanager.repositorys.VeiculoRepository;
-import com.autobots.automanager.repositorys.VendaRespository;
+import com.autobots.automanager.models.SelecionadorUsuario;
+import com.autobots.automanager.models.VerificadorPermissao;
+import com.autobots.automanager.repositorys.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.Document;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,10 +33,10 @@ public class UsuarioService {
     private AdicionadorLinkUsuario adicionadorLinkUsuario;
 
     @Autowired
-    private VendaRespository repositorioVenda;
+    private EmpresaRepository repositorioEmpresa;
 
     @Autowired
-    private EmpresaRepository repositorioEmpresa;
+    private VendaRepository repositorioVenda;
 
     @Autowired
     private VeiculoRepository repositorioVeiculo;
@@ -41,20 +45,74 @@ public class UsuarioService {
     private CadastradorUsuario cadastradorUsuario;
 
     @Autowired
-    private AtualizadorEmail atualizadorEmail;
-
-    @Autowired
     private AtualizadorDocumento atualizadorDocumento;
 
     @Autowired
     private AtualizadorTelefone atualizadorTelefone;
 
-    public void cadastrarUsuario(UsuarioDto usuario) {
+    @Autowired
+    private AtualizadorEmail atualizadorEmail;
+
+    @Autowired
+    private SelecionadorUsuario selecionadorUsuario;
+
+    @Autowired
+    private VerificadorPermissao verificadorPermissao;
+
+    public List<Usuario> listarUsuarios(String username) {
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
+
+        if (usuarioLogado.getPerfis().contains(PerfilUsuario.ROLE_GERENTE)) {
+            usuarios = selecionadorUsuario.selecionarPorCargo(usuarios, PerfilUsuario.ROLE_GERENTE);
+        } else if (usuarioLogado.getPerfis().contains(PerfilUsuario.ROLE_VENDEDOR)) {
+            usuarios = selecionadorUsuario.selecionarPorCargo(usuarios, PerfilUsuario.ROLE_VENDEDOR);
+        } else if (usuarioLogado.getPerfis().contains(PerfilUsuario.ROLE_CLIENTE)) {
+            usuarios = new ArrayList<Usuario>();
+            usuarios.add(usuarioLogado);
+        }
+        adicionadorLinkUsuario.adicionarLink(usuarios);
+        return usuarios;
+    }
+
+    public List<Usuario> listarUsuarios() {
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        adicionadorLinkUsuario.adicionarLink(usuarios);
+        return usuarios;
+    }
+
+    public Usuario visualizarUsuario(Long id) {
+        Usuario usuario = repositorioUsuario.findById(id).orElse(null);
+        if (usuario != null) {
+            adicionadorLinkUsuario.adicionarLink(usuario);
+        }
+        return usuario;
+    }
+
+    public void cadastrarUsuario(String username, UsuarioDto usuario) {
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
+
+        boolean permissao = verificadorPermissao.verificar(usuarioLogado.getPerfis(),usuario.perfis());
+
+        if (!permissao) {
+            throw new IllegalArgumentException("Usuário sem permissão para cadastrar usuário");
+        }
+
         Usuario usuarioCadastrado = CadastradorUsuario.cadastrarUsuario(usuario);
         repositorioUsuario.save(usuarioCadastrado);
     }
 
-    public void cadastrarUsuarioEmpresa(UsuarioDto usuario, Long idEmpresa) {
+    public void cadastrarUsuarioEmpresa(UsuarioDto usuario, Long idEmpresa, String username) {
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
+
+        boolean permissao = verificadorPermissao.verificar(usuarioLogado.getPerfis(),usuario.perfis());
+
+        if (!permissao) {
+            throw new IllegalArgumentException("Usuário sem permissão para cadastrar usuário");
+        }
+
         Empresa empresa = repositorioEmpresa.findById(idEmpresa).orElse(null);
         if (empresa == null) {
             throw new IllegalArgumentException("Empresa não encontrada");
@@ -65,49 +123,68 @@ public class UsuarioService {
         repositorioEmpresa.save(empresa);
     }
 
-    public void deletarUsuario(Long id) {
-        Usuario usuario = repositorioUsuario.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-        List<Venda> vendas = repositorioVenda.findAll();
-        for (Venda venda : vendas) {
-            if (venda.getCliente() == usuario) {
-                venda.setCliente(null);
-            }
-            if (venda.getFuncionario() == usuario) {
-                venda.setFuncionario(null);
-            }
-            usuario.getVendas().remove(venda);
+    public void vincularUsuarioEmpresa(Long idUsuario, Long idEmpresa, String username) {
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
+        Usuario usuario = repositorioUsuario.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado");
         }
 
-        List<Veiculo> veiculos = repositorioVeiculo.findAll();
-        for (Veiculo veiculo : veiculos) {
-            if (veiculo.getProprietario() == usuario) {
-                veiculo.setProprietario(null);
-            }
+        boolean permissao = verificadorPermissao.verificar(usuarioLogado.getPerfis(), usuario.getPerfis());
+
+        if (!permissao) {
+            throw new IllegalArgumentException("Usuário sem permissão para cadastrar usuário");
         }
 
-        List<Empresa> empresas = repositorioEmpresa.findAll();
-        for (Empresa empresa : empresas) {
-            empresa.getUsuarios().remove(usuario);
+        Empresa empresa = repositorioEmpresa.findById(idEmpresa).orElse(null);
+        if (empresa == null) {
+            throw new IllegalArgumentException("Empresa não encontrada");
         }
-
-        usuario.getDocumentos().clear();
-
-        usuario.setEndereco(null);
-
-        usuario.getTelefones().clear();
-
-        usuario.getEmails().clear();
-
-        usuario.getCredenciais().clear();
-
-        usuario.getMercadorias().clear();
-
-        repositorioUsuario.deleteById(id);
+        empresa.getUsuarios().add(usuario);
+        repositorioEmpresa.save(empresa);
     }
 
-    public ResponseEntity<?> atualizarUsuario(Long id, AtualizarUsuarioDto usuario) {
+    public void desvincularUsuarioEmpresa(Long idUsuario, Long idEmpresa, String username) {
+
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
+        Usuario usuario = repositorioUsuario.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado");
+        }
+
+        boolean permissao = verificadorPermissao.verificar(usuarioLogado.getPerfis(), usuario.getPerfis());
+
+        if (!permissao) {
+            throw new IllegalArgumentException("Usuário sem permissão para cadastrar usuário");
+        }
+
+        Empresa empresa = repositorioEmpresa.findById(idEmpresa).orElse(null);
+        if (empresa == null) {
+            throw new IllegalArgumentException("Empresa não encontrada");
+        }
+        empresa.getUsuarios().remove(usuario);
+        repositorioEmpresa.save(empresa);
+    }
+
+    public ResponseEntity<?> atualizarUsuario(Long id, AtualizarUsuarioDto usuario, String username) {
+
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
         Usuario usuarioAtual = repositorioUsuario.findById(id).orElse(null);
+
+
         if (usuarioAtual != null) {
+
+            boolean permissao = verificadorPermissao.verificar(usuarioLogado.getPerfis(), usuarioAtual.getPerfis());
+
+            if (!permissao) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
             if (usuario.nome().isPresent()) {
                 usuarioAtual.setNome(usuario.nome().get());
             }
@@ -147,8 +224,8 @@ public class UsuarioService {
                     }
                 }
             }
-            if (usuario.credenciais().isPresent()) {
-                usuarioAtual.getCredenciais().addAll(usuario.credenciais().get());
+            if (usuario.credencial().isPresent()) {
+                usuarioAtual.setCredencial(usuario.credencial().get());
             }
             if (usuario.mercadorias().isPresent()) {
                 usuarioAtual.getMercadorias().addAll(usuario.mercadorias().get());
@@ -166,43 +243,53 @@ public class UsuarioService {
         }
     }
 
-    public List<Usuario> listarUsuarios() {
+    public void deletarUsuario(Long id, String username) {
+
         List<Usuario> usuarios = repositorioUsuario.findAll();
-        adicionadorLinkUsuario.adicionarLink(usuarios);
-        return usuarios;
-    }
+        Usuario usuarioLogado = selecionadorUsuario.selecionarUsername(usuarios, username);
+        Usuario usuario = repositorioUsuario.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-    public Usuario visualizarUsuario(Long id) {
-        Usuario usuario = repositorioUsuario.findById(id).orElse(null);
-        if (usuario != null) {
-            adicionadorLinkUsuario.adicionarLink(usuario);
-        }
-        return usuario;
-    }
+        boolean permissao = verificadorPermissao.verificar(usuarioLogado.getPerfis(), usuario.getPerfis());
 
-    public void vincularUsuarioEmpresa(Long idUsuario, Long idEmpresa) {
-        Usuario usuario = repositorioUsuario.findById(idUsuario).orElse(null);
-        if (usuario == null) {
-            throw new IllegalArgumentException("Usuário não encontrado");
+        if (!permissao) {
+            throw new IllegalArgumentException("Usuário sem permissão para deletar usuário");
         }
-        Empresa empresa = repositorioEmpresa.findById(idEmpresa).orElse(null);
-        if (empresa == null) {
-            throw new IllegalArgumentException("Empresa não encontrada");
-        }
-        empresa.getUsuarios().add(usuario);
-        repositorioEmpresa.save(empresa);
-    }
 
-    public void desvincularUsuarioEmpresa(Long idUsuario, Long idEmpresa) {
-        Usuario usuario = repositorioUsuario.findById(idUsuario).orElse(null);
-        if (usuario == null) {
-            throw new IllegalArgumentException("Usuário não encontrado");
+        List<Venda> vendas = repositorioVenda.findAll();
+        for (Venda venda : vendas) {
+            if (venda.getCliente() == usuario) {
+                venda.setCliente(null);
+            }
+            if (venda.getFuncionario() == usuario) {
+                venda.setFuncionario(null);
+            }
+            usuario.getVendas().remove(venda);
         }
-        Empresa empresa = repositorioEmpresa.findById(idEmpresa).orElse(null);
-        if (empresa == null) {
-            throw new IllegalArgumentException("Empresa não encontrada");
+
+        List<Veiculo> veiculos = repositorioVeiculo.findAll();
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.getProprietario() == usuario) {
+                veiculo.setProprietario(null);
+            }
         }
-        empresa.getUsuarios().remove(usuario);
-        repositorioEmpresa.save(empresa);
+
+        List<Empresa> empresas = repositorioEmpresa.findAll();
+        for (Empresa empresa : empresas) {
+            empresa.getUsuarios().remove(usuario);
+        }
+
+        usuario.getDocumentos().clear();
+
+        usuario.setEndereco(null);
+
+        usuario.getTelefones().clear();
+
+        usuario.getEmails().clear();
+
+        usuario.setCredencial(null);
+
+        usuario.getMercadorias().clear();
+
+        repositorioUsuario.deleteById(id);
     }
 }

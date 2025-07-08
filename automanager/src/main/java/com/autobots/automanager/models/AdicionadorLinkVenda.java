@@ -2,7 +2,6 @@ package com.autobots.automanager.models;
 
 import com.autobots.automanager.controles.VendaControle;
 import com.autobots.automanager.entidades.Venda;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
             long id = venda.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(VendaController.class)
+                            .methodOn(VendaControle.class)
                             .visualizarVenda(id))
                     .withSelfRel();
             venda.add(linkProprio);
@@ -29,7 +28,7 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
     public void adicionarLink(Venda objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(VendaController.class)
+                        .methodOn(VendaControle.class)
                         .listarVendas())
                 .withRel("vendas");
         objeto.add(linkProprio);

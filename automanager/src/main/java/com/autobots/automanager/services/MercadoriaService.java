@@ -10,7 +10,7 @@ import com.autobots.automanager.models.CadastradorMercadoria;
 import com.autobots.automanager.repositorys.EmpresaRepository;
 import com.autobots.automanager.repositorys.MercadoriaRepository;
 import com.autobots.automanager.repositorys.UsuarioRepository;
-import com.autobots.automanager.repositorys.VendaRespository;
+import com.autobots.automanager.repositorys.VendaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class MercadoriaService {
     private UsuarioRepository repositorioUsuario;
 
     @Autowired
-    private VendaRespository repositorioVenda;
+    private VendaRepository repositorioVenda;
 
     @Autowired
     private EmpresaRepository repositorioEmpresa;

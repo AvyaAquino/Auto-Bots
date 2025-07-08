@@ -7,7 +7,7 @@ import com.autobots.automanager.models.AdicionadorLinkServico;
 import com.autobots.automanager.models.CadastradorVenda;
 import com.autobots.automanager.repositorys.EmpresaRepository;
 import com.autobots.automanager.repositorys.ServicoRepository;
-import com.autobots.automanager.repositorys.VendaRespository;
+import com.autobots.automanager.repositorys.VendaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class ServicoService {
     private AdicionadorLinkServico adicionadorLinkServico;
 
     @Autowired
-    private VendaRespository repositorioVenda;
+    private VendaRepository repositorioVenda;
 
     @Autowired
     private EmpresaRepository repositorioEmpresa;

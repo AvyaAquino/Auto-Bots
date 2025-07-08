@@ -2,7 +2,6 @@ package com.autobots.automanager.models;
 
 import com.autobots.automanager.controles.UsuarioControle;
 import com.autobots.automanager.entidades.Usuario;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<Usuario> {
             long id = usuario.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(UsuarioController.class)
+                            .methodOn(UsuarioControle.class)
                             .visualizarUsuario(id))
                     .withSelfRel();
             usuario.add(linkProprio);
@@ -29,7 +28,7 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<Usuario> {
     public void adicionarLink(Usuario objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(UsuarioController.class)
+                        .methodOn(UsuarioControle.class)
                         .listarUsuarios())
                 .withRel("usuarios");
         objeto.add(linkProprio);

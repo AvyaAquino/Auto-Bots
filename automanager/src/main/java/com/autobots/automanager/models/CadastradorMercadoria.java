@@ -2,7 +2,6 @@ package com.autobots.automanager.models;
 
 import com.autobots.automanager.DTO.MercadoriaDto;
 import com.autobots.automanager.entidades.Mercadoria;
-
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

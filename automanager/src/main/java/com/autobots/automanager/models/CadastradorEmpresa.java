@@ -1,10 +1,9 @@
 package com.autobots.automanager.models;
 
+import com.autobots.automanager.entidades.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import com.autobots.automanager.entidades.*;
 
 import java.util.Date;
 

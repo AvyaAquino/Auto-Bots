@@ -1,8 +1,7 @@
 package com.autobots.automanager.models;
 
-import org.springframework.stereotype.Component;
-
 import com.autobots.automanager.entidades.Documento;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
