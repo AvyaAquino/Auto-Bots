@@ -2,9 +2,8 @@ package com.autobots.automanager.models;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import com.autobots.automanager.entidades.Documento;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DocumentoAtualizador {

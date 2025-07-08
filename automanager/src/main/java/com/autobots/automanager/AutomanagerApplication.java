@@ -13,7 +13,7 @@ import com.autobots.automanager.entidades.Cliente;
 import com.autobots.automanager.entidades.Documento;
 import com.autobots.automanager.entidades.Endereco;
 import com.autobots.automanager.entidades.Telefone;
-import com.autobots.automanager.repository.ClienteRepository;
+import com.autobots.automanager.repositorys.ClienteRepository;
 
 @SpringBootApplication
 public class AutomanagerApplication {
@@ -33,38 +33,38 @@ public class AutomanagerApplication {
 			calendario.set(2002, 05, 15);
 
 			Cliente cliente = new Cliente();
-			cliente.setNome("Pedro Alcântara de Bragança e Bourbon");
+			cliente.setNome("Pedro AlcÃ¢ntara de BraganÃ§a e Bourbon");
 			cliente.setDataCadastro(Calendar.getInstance().getTime());
 			cliente.setDataNascimento(calendario.getTime());
 			cliente.setNomeSocial("Dom Pedro");
+
 			Telefone telefone = new Telefone();
 			telefone.setDdd("21");
 			telefone.setNumero("981234576");
 			cliente.getTelefones().add(telefone);
-			
+
 			Endereco endereco = new Endereco();
 			endereco.setEstado("Rio de Janeiro");
 			endereco.setCidade("Rio de Janeiro");
 			endereco.setBairro("Copacabana");
-			endereco.setRua("Avenida Atlântica");
+			endereco.setRua("Avenida AtlÃ¢ntica");
 			endereco.setNumero("1702");
 			endereco.setCodigoPostal("22021001");
 			endereco.setInformacoesAdicionais("Hotel Copacabana palace");
 			cliente.setEndereco(endereco);
-			
+
 			Documento rg = new Documento();
 			rg.setTipo("RG");
 			rg.setNumero("1500");
-			
+
 			Documento cpf = new Documento();
-			cpf.setTipo("CPF");
+			cpf.setTipo("RG");
 			cpf.setNumero("00000000001");
-			
+
 			cliente.getDocumentos().add(rg);
 			cliente.getDocumentos().add(cpf);
-			
+
 			repositorio.save(cliente);
 		}
 	}
-
 }

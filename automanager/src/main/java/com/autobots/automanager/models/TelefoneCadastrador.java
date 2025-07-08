@@ -1,14 +1,13 @@
 package com.autobots.automanager.models;
 
-import org.springframework.stereotype.Component;
-
 import com.autobots.automanager.entidades.Cliente;
 import com.autobots.automanager.entidades.Telefone;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class TelefoneCadastrar {
+public class TelefoneCadastrador {
     private StringVerificadorNulo verificadorNulo = new StringVerificadorNulo();
 
     public void cadastro(Cliente cliente, Telefone telefone){
@@ -27,4 +26,5 @@ public class TelefoneCadastrar {
             cadastro(cliente, telefone);
         }
     }
+
 }

@@ -1,30 +1,27 @@
 package com.autobots.automanager.models;
 
-import com.autobots.automanager.models.StringVerificadorNulo;
-
-import org.springframework.stereotype.Component;
-
 import com.autobots.automanager.entidades.Cliente;
 import com.autobots.automanager.entidades.Telefone;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class TelefoneRemovedor {
-    private StringVerificadorNulo verificadorNulo = new StringVerificadorNulo();
+    private StringVerificadorNulo verificador = new StringVerificadorNulo();
 
-    public void remover(Cliente cliente, Telefone telefone){
-        if (telefone != null){
-            if (!verificadorNulo.verificar(telefone.getDdd()) && !verificadorNulo.verificar(telefone.getNumero())){
+    public void excluir(Cliente cliente, Telefone telefone) {
+        if (telefone != null) {
+            if (!verificador.verificar(telefone.getDdd()) && !verificador.verificar(telefone.getNumero())) {
                 cliente.getTelefones().remove(telefone);
             }
         }
     }
 
-    public void remover(Cliente cliente, List<Telefone> telefones){
-        for (Telefone telefoneVazio : telefones){
-            if (telefoneVazio.getId() != null){
-                remover(cliente, telefoneVazio);
+    public void excluir(Cliente cliente, List<Telefone> telefones) {
+        for (Telefone telefoneExcluido : telefones) {
+            if (telefoneExcluido.getId() != null) {
+                excluir(cliente, telefoneExcluido);
             }
         }
     }
