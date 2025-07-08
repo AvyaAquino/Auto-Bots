@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.entitades.Veiculo;
 import com.autobots.automanager.services.VeiculoService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/veiculos")
-public class VeiculoControle {
+public class VeiculoController {
 
     @Autowired
     private VeiculoService veiculoServico;

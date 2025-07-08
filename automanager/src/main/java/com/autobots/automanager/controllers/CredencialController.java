@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.DTO.CredencialDto;
 import com.autobots.automanager.entitades.Credencial;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/credenciais")
-public class CredencialControle {
+public class CredencialController {
 
     @Autowired
     private CredencialService credencialServico;

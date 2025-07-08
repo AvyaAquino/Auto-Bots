@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.DTO.AtualizarVendaDto;
 import com.autobots.automanager.entitades.Venda;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vendas")
-public class VendaControle {
+public class VendaController {
 
     @Autowired
     private VendaService vendaServico;

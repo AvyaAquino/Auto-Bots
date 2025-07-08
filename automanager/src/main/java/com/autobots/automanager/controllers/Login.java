@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import lombok.Data;
 

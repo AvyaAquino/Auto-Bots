@@ -17,7 +17,7 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<Usuario> {
             long id = usuario.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(UsuarioControle.class)
+                            .methodOn(UsuarioController.class)
                             .visualizarUsuario(id))
                     .withSelfRel();
             usuario.add(linkProprio);
@@ -28,7 +28,7 @@ public class AdicionadorLinkUsuario implements AdicionadorLink<Usuario> {
     public void adicionarLink(Usuario objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(UsuarioControle.class)
+                        .methodOn(UsuarioController.class)
                         .listarUsuarios())
                 .withRel("usuarios");
         objeto.add(linkProprio);

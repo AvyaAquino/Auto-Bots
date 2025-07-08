@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.entitades.Empresa;
 import com.autobots.automanager.models.CadastradorEmpresa;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/empresas")
-public class EmpresaControle {
+public class EmpresaController {
     @Autowired
     private EmpresaService empresaServico;
 

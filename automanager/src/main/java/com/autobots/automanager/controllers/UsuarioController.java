@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.DTO.AtualizarUsuarioDto;
 import com.autobots.automanager.DTO.UsuarioDto;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioControle {
+public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;

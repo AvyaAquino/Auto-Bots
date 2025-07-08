@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.entitades.Servico;
 import com.autobots.automanager.services.ServicoService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/servicos")
-public class ServicoControle {
+public class ServicoController {
 
     @Autowired
     private ServicoService servicoServico;

@@ -17,7 +17,7 @@ public class AdicionadorLinkServico implements AdicionadorLink<Servico> {
             long id = servico.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(ServicoControle.class)
+                            .methodOn(ServicoController.class)
                             .visualizarServico(id))
                     .withSelfRel();
             servico.add(linkProprio);
@@ -28,7 +28,7 @@ public class AdicionadorLinkServico implements AdicionadorLink<Servico> {
     public void adicionarLink(Servico objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(ServicoControle.class)
+                        .methodOn(ServicoController.class)
                         .listarServicos())
                 .withRel("servicos");
         objeto.add(linkProprio);

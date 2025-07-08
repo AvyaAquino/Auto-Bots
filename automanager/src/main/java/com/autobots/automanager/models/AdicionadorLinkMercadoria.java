@@ -17,7 +17,7 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
             long id = mercadoria.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(MercadoriaControle.class)
+                            .methodOn(MercadoriaController.class)
                             .visualizarMercadoria(id))
                     .withSelfRel();
             mercadoria.add(linkProprio);
@@ -28,7 +28,7 @@ public class AdicionadorLinkMercadoria implements AdicionadorLink<Mercadoria> {
     public void adicionarLink(Mercadoria objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(MercadoriaControle.class)
+                        .methodOn(MercadoriaController.class)
                         .listarMercadorias())
                 .withRel("mercadorias");
         objeto.add(linkProprio);

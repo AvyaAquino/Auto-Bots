@@ -17,7 +17,7 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<Veiculo> {
             long id = veiculo.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(VeiculoControle.class)
+                            .methodOn(VeiculoController.class)
                             .visualizarVeiculo(id))
                     .withSelfRel();
             veiculo.add(linkProprio);
@@ -28,7 +28,7 @@ public class AdicionadorLinkVeiculo implements AdicionadorLink<Veiculo> {
     public void adicionarLink(Veiculo objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(VeiculoControle.class)
+                        .methodOn(VeiculoController.class)
                         .listarVeiculos())
                 .withRel("veiculos");
         objeto.add(linkProprio);

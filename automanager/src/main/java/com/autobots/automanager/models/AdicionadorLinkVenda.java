@@ -17,7 +17,7 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
             long id = venda.getId();
             Link linkProprio = WebMvcLinkBuilder
                     .linkTo(WebMvcLinkBuilder
-                            .methodOn(VendaControle.class)
+                            .methodOn(VendaController.class)
                             .visualizarVenda(id))
                     .withSelfRel();
             venda.add(linkProprio);
@@ -28,7 +28,7 @@ public class AdicionadorLinkVenda implements AdicionadorLink<Venda> {
     public void adicionarLink(Venda objeto) {
         Link linkProprio = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder
-                        .methodOn(VendaControle.class)
+                        .methodOn(VendaController.class)
                         .listarVendas())
                 .withRel("vendas");
         objeto.add(linkProprio);

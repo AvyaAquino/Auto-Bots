@@ -1,4 +1,4 @@
-package com.autobots.automanager.controles;
+package com.autobots.automanager.controllers;
 
 import com.autobots.automanager.DTO.MercadoriaDto;
 import com.autobots.automanager.entitades.Mercadoria;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mercadorias")
-public class MercadoriaControle {
+public class MercadoriaController {
 
     @Autowired
     private MercadoriaService mercadoriaServico;
